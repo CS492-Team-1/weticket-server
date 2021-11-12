@@ -10,6 +10,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
+import { CommonModule } from './common/common.module';
 import { JwtModule } from './jwt/jwt.module';
 import { UserModule } from './user/user.module';
 
@@ -23,14 +24,20 @@ import { UserModule } from './user/user.module';
     }),
     GraphQLModule.forRoot({
       autoSchemaFile: 'src/schema.gql',
-      context: ({ req }) => {
-        const token = req.headers['authorization']
-          ? req.headers['authorization'].replace('Bearer ', '')
-          : undefined;
+      installSubscriptionHandlers: true,
+      context: ({ req, connection }) => {
+        const authorization: string | null =
+          req?.headers?.authorization ||
+          connection?.context?.Authorization ||
+          null;
 
-        return {
-          token,
-        };
+        if (authorization) {
+          const token = authorization.replace('Bearer ', '');
+
+          return {
+            token,
+          };
+        }
       },
     }),
     MongooseModule.forRoot(process.env.DB_CONNECTION_STRING),
@@ -40,6 +47,7 @@ import { UserModule } from './user/user.module';
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'static'),
     }),
+    CommonModule,
     UserModule,
     AuthModule,
   ],
