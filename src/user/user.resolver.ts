@@ -97,4 +97,10 @@ export class UserResolver {
 
     return _id;
   }
+
+  @ResolveField()
+  async reservations(@Parent() user: UserDocument) {
+    const userWithReservations = await user.populate('reservations');
+    return userWithReservations.reservations;
+  }
 }

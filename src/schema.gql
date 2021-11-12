@@ -2,9 +2,30 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Reservation {
+  id: String!
+  time: DateTime!
+  seat: Float!
+  status: ReservationStatus!
+  preemptedAt: DateTime
+  reservedAt: DateTime
+  user: User!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+enum ReservationStatus {
+  PREEMPTED
+  RESERVED
+}
+
 type User {
   id: String!
   username: String!
+  reservations: [Reservation!]!
 }
 
 type LoginOutput {
@@ -19,13 +40,44 @@ type RegisterOutput {
   user: User
 }
 
+type PreemptSeatOutput {
+  ok: Boolean!
+  error: String
+  reservation: Reservation
+}
+
+type ReserveSeatOutput {
+  ok: Boolean!
+  error: String
+  reservation: Reservation
+}
+
+type ReservationsOutput {
+  ok: Boolean!
+  error: String
+  reservations: [Reservation!]
+}
+
+type CancelReservationOutput {
+  ok: Boolean!
+  error: String
+}
+
 type Query {
   me: User!
+  reservations(input: ReservationsInput!): ReservationsOutput!
+}
+
+input ReservationsInput {
+  time: DateTime!
 }
 
 type Mutation {
   login(input: LoginInput!): LoginOutput!
   register(input: RegisterInput!): RegisterOutput!
+  preemptSeat(input: PreemptSeatInput!): PreemptSeatOutput!
+  reserveSeat(input: ReserveSeatInput!): ReserveSeatOutput!
+  cancelReservation(input: CancelReservationInput!): CancelReservationOutput!
 }
 
 input LoginInput {
@@ -36,4 +88,22 @@ input LoginInput {
 input RegisterInput {
   username: String!
   password: String!
+}
+
+input PreemptSeatInput {
+  time: DateTime!
+  seat: Float!
+}
+
+input ReserveSeatInput {
+  reservationId: String!
+}
+
+input CancelReservationInput {
+  reservationId: String!
+}
+
+type Subscription {
+  newReservationOnTime(time: DateTime!): Reservation!
+  canceledReservationOnTime(time: DateTime!): Reservation!
 }

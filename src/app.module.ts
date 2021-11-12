@@ -12,6 +12,7 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { CommonModule } from './common/common.module';
 import { JwtModule } from './jwt/jwt.module';
+import { ReservationModule } from './reservation/reservation.module';
 import { UserModule } from './user/user.module';
 
 @Module({
@@ -46,10 +47,12 @@ import { UserModule } from './user/user.module';
     }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'static'),
+      exclude: ['/graphql', '/playground'],
     }),
     CommonModule,
     UserModule,
     AuthModule,
+    ReservationModule,
   ],
   controllers: [AppController],
   providers: [AppService],
