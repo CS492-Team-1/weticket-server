@@ -1,10 +1,19 @@
 import * as bcrypt from 'bcrypt';
+import { AuthUser } from 'src/auth/auth-user.decorator';
+import { Auth } from 'src/auth/auth.decorator';
 import { JwtService } from 'src/jwt/jwt.service';
 
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 
 import { LoginInput, LoginOutput, RegisterInput, RegisterOutput } from './dtos';
-import { User } from './schemas';
+import { User, UserDocument } from './schemas';
 import { UserService } from './user.service';
 
 @Resolver(() => User)
@@ -14,11 +23,10 @@ export class UserResolver {
     private readonly jwtService: JwtService,
   ) {}
 
-  // 임시 Query
-  // 추후 Authentication 구현시 변경예정
+  @Auth()
   @Query(() => User)
-  async me(@Args('id') id: string) {
-    return this.userService.findOneById(id);
+  async me(@AuthUser() user: User) {
+    return user;
   }
 
   @Mutation(() => LoginOutput)
@@ -46,7 +54,7 @@ export class UserResolver {
 
       return {
         ok: true,
-        accessToken: this.jwtService.sign(user.id),
+        accessToken: this.jwtService.sign(user._id),
       };
     } catch (err) {
       return {
@@ -81,5 +89,12 @@ export class UserResolver {
         error: err.message,
       };
     }
+  }
+
+  @ResolveField()
+  async id(@Parent() user: UserDocument) {
+    const { _id } = user;
+
+    return _id;
   }
 }
