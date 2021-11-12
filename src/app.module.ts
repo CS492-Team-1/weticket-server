@@ -25,14 +25,19 @@ import { UserModule } from './user/user.module';
     GraphQLModule.forRoot({
       autoSchemaFile: 'src/schema.gql',
       installSubscriptionHandlers: true,
-      context: ({ req }) => {
-        const token = req.headers['authorization']
-          ? req.headers['authorization'].replace('Bearer ', '')
-          : undefined;
+      context: ({ req, connection }) => {
+        const authorization: string | null =
+          req?.headers?.authorization ||
+          connection?.context?.Authorization ||
+          null;
 
-        return {
-          token,
-        };
+        if (authorization) {
+          const token = authorization.replace('Bearer ', '');
+
+          return {
+            token,
+          };
+        }
       },
     }),
     MongooseModule.forRoot(process.env.DB_CONNECTION_STRING),
