@@ -25,6 +25,8 @@ import { UserModule } from './user/user.module';
     }),
     GraphQLModule.forRoot({
       autoSchemaFile: 'src/schema.gql',
+      playground: true,
+      introspection: true,
       installSubscriptionHandlers: true,
       context: ({ req, connection }) => {
         const authorization: string | null =
