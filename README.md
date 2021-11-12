@@ -12,7 +12,7 @@ Server for WeTicket
 - [x] Project Initialization
 - [x] Authentication & Authorization
 - [x] Seat Layout Serving (.json)
-- [ ] Reservation Module
+- [x] Reservation Module
 
 ### Task & Milestones
 Checkout [issues](https://github.com/CS492-Team-1/weticket-server/issues)
