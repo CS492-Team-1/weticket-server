@@ -1,4 +1,5 @@
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
+import { Reservation } from 'src/reservation/schemas';
 
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
@@ -18,6 +19,10 @@ export class User {
 
   @Prop({ required: true })
   password: string;
+
+  @Prop({ type: [Types.ObjectId], ref: Reservation.name, default: [] })
+  @Field(() => [Reservation])
+  reservations: Reservation[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
