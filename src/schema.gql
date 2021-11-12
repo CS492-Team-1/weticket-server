@@ -9,6 +9,7 @@ type Reservation {
   status: ReservationStatus!
   preemptedAt: DateTime
   reservedAt: DateTime
+  user: User!
 }
 
 """
@@ -39,13 +40,44 @@ type RegisterOutput {
   user: User
 }
 
+type PreemptSeatOutput {
+  ok: Boolean!
+  error: String
+  reservation: Reservation
+}
+
+type ReserveSeatOutput {
+  ok: Boolean!
+  error: String
+  reservation: Reservation
+}
+
+type ReservationsOutput {
+  ok: Boolean!
+  error: String
+  reservations: [Reservation!]
+}
+
+type CancelReservationOutput {
+  ok: Boolean!
+  error: String
+}
+
 type Query {
   me: User!
+  reservations(input: ReservationsInput!): ReservationsOutput!
+}
+
+input ReservationsInput {
+  time: DateTime!
 }
 
 type Mutation {
   login(input: LoginInput!): LoginOutput!
   register(input: RegisterInput!): RegisterOutput!
+  preemptSeat(input: PreemptSeatInput!): PreemptSeatOutput!
+  reserveSeat(input: ReserveSeatInput!): ReserveSeatOutput!
+  cancelReservation(input: CancelReservationInput!): CancelReservationOutput!
 }
 
 input LoginInput {
@@ -56,4 +88,22 @@ input LoginInput {
 input RegisterInput {
   username: String!
   password: String!
+}
+
+input PreemptSeatInput {
+  time: DateTime!
+  seat: Float!
+}
+
+input ReserveSeatInput {
+  reservationId: String!
+}
+
+input CancelReservationInput {
+  reservationId: String!
+}
+
+type Subscription {
+  newReservationOnTime(time: DateTime!): Reservation!
+  canceledReservationOnTime(time: DateTime!): Reservation!
 }

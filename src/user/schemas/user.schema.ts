@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import { Document, Types } from 'mongoose';
 import { Reservation } from 'src/reservation/schemas';
 
@@ -20,7 +21,7 @@ export class User {
   @Prop({ required: true })
   password: string;
 
-  @Prop({ type: [Types.ObjectId], ref: Reservation.name, default: [] })
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'Reservation' }] })
   @Field(() => [Reservation])
   reservations: Reservation[];
 }

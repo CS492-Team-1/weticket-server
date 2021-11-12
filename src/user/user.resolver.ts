@@ -2,7 +2,6 @@ import * as bcrypt from 'bcrypt';
 import { AuthUser } from 'src/auth/auth-user.decorator';
 import { Auth } from 'src/auth/auth.decorator';
 import { JwtService } from 'src/jwt/jwt.service';
-import { Reservation } from 'src/reservation/schemas';
 
 import {
   Args,
@@ -101,10 +100,7 @@ export class UserResolver {
 
   @ResolveField()
   async reservations(@Parent() user: UserDocument) {
-    const userWithReservations = await user.populate(
-      'reservations',
-      Reservation.name,
-    );
+    const userWithReservations = await user.populate('reservations');
     return userWithReservations.reservations;
   }
 }
