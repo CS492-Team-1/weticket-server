@@ -4,6 +4,8 @@ import { BaseOutput } from 'src/common/dtos';
 
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
 
+import { User } from '../schemas';
+
 @InputType()
 export class RegisterInput {
   @Field(() => String)
@@ -18,4 +20,7 @@ export class RegisterInput {
 }
 
 @ObjectType()
-export class RegisterOutput extends BaseOutput {}
+export class RegisterOutput extends BaseOutput {
+  @Field(() => User, { nullable: true })
+  user?: User;
+}

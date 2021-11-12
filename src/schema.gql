@@ -1,0 +1,40 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type User {
+  id: String!
+  username: String!
+  password: String!
+}
+
+type LoginOutput {
+  ok: Boolean!
+  error: String
+  accessToken: String
+}
+
+type RegisterOutput {
+  ok: Boolean!
+  error: String
+  user: User
+}
+
+type Query {
+  me(id: String!): User!
+}
+
+type Mutation {
+  login(input: LoginInput!): LoginOutput!
+  register(input: RegisterInput!): RegisterOutput!
+}
+
+input LoginInput {
+  username: String!
+  password: String!
+}
+
+input RegisterInput {
+  username: String!
+  password: String!
+}

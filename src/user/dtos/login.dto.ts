@@ -18,4 +18,7 @@ export class LoginInput {
 }
 
 @ObjectType()
-export class LoginOutput extends BaseOutput {}
+export class LoginOutput extends BaseOutput {
+  @Field(() => String, { nullable: true })
+  accessToken?: string;
+}
