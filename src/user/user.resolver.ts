@@ -1,4 +1,5 @@
 import * as bcrypt from 'bcrypt';
+import { JwtService } from 'src/jwt/jwt.service';
 
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
@@ -8,7 +9,10 @@ import { UserService } from './user.service';
 
 @Resolver(() => User)
 export class UserResolver {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly jwtService: JwtService,
+  ) {}
 
   // 임시 Query
   // 추후 Authentication 구현시 변경예정
@@ -42,7 +46,7 @@ export class UserResolver {
 
       return {
         ok: true,
-        accessToken: 'PASS',
+        accessToken: this.jwtService.sign(user.id),
       };
     } catch (err) {
       return {
