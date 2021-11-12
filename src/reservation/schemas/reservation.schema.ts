@@ -1,4 +1,5 @@
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
+import { User } from 'src/user/schemas';
 
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
@@ -33,6 +34,10 @@ export class Reservation {
   @Prop({ type: Date })
   @Field(() => Date, { nullable: true })
   reservedAt?: Date;
+
+  @Prop({ type: Types.ObjectId, ref: 'User' })
+  @Field(() => User)
+  user: User;
 }
 
 export const ReservationSchema = SchemaFactory.createForClass(Reservation);

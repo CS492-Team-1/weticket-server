@@ -1,4 +1,5 @@
 import { Model } from 'mongoose';
+import { User } from 'src/user/schemas';
 
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -26,10 +27,11 @@ export class ReservationService {
       .exec();
   }
 
-  async create(time: Date, seat: number) {
+  async create(time: Date, seat: number, user: User) {
     const reservation = new this.reservations({
       time,
       seat,
+      user,
       status: ReservationStatus.PREEMPTED,
     });
 

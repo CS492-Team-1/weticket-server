@@ -1,3 +1,5 @@
+import { UserModule } from 'src/user/user.module';
+
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
@@ -7,8 +9,12 @@ import { Reservation, ReservationSchema } from './schemas';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{name: Reservation.name, schema: ReservationSchema}])
+    MongooseModule.forFeature([
+      { name: Reservation.name, schema: ReservationSchema },
+    ]),
+    UserModule,
   ],
-  providers: [ReservationResolver, ReservationService]
+  providers: [ReservationResolver, ReservationService],
+  exports: [ReservationService],
 })
 export class ReservationModule {}
