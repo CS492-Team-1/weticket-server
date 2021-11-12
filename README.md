@@ -10,8 +10,8 @@ Server for WeTicket
 
 ### Todo
 - [x] Project Initialization
-- [ ] Authentication & Authorization
-- [ ] Seat Layout Serving (.json)
+- [x] Authentication & Authorization
+- [x] Seat Layout Serving (.json)
 - [ ] Reservation Module
 
 ### Task & Milestones
