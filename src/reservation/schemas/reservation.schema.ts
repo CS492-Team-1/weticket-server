@@ -31,10 +31,6 @@ export class Reservation {
   @Field(() => Date, { nullable: true })
   preemptedAt?: Date;
 
-  @Prop({ type: Date })
-  @Field(() => Date, { nullable: true })
-  reservedAt?: Date;
-
   @Prop({ type: Types.ObjectId, ref: 'User' })
   @Field(() => User)
   user: User;

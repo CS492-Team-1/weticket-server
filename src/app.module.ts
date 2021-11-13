@@ -5,6 +5,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ScheduleModule } from '@nestjs/schedule';
 import { ServeStaticModule } from '@nestjs/serve-static';
 
 import { AppController } from './app.controller';
@@ -51,6 +52,7 @@ import { UserModule } from './user/user.module';
       rootPath: join(__dirname, '..', 'static'),
       exclude: ['/graphql', '/playground'],
     }),
+    ScheduleModule.forRoot(),
     CommonModule,
     UserModule,
     AuthModule,

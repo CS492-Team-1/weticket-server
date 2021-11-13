@@ -1,8 +1,9 @@
 import { Model } from 'mongoose';
 import { User } from 'src/user/schemas';
 
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { Cron, CronExpression } from '@nestjs/schedule';
 
 import { ReservationStatus } from './enums';
 import { Reservation, ReservationDocument } from './schemas';
@@ -13,6 +14,8 @@ export class ReservationService {
     @InjectModel(Reservation.name)
     private reservations: Model<ReservationDocument>,
   ) {}
+
+  private readonly logger = new Logger(ReservationService.name);
 
   async findById(reservationId: string) {
     return this.reservations.findById(reservationId).exec();
@@ -33,6 +36,7 @@ export class ReservationService {
       seat,
       user,
       status: ReservationStatus.PREEMPTED,
+      preemptedAt: new Date(),
     });
 
     return reservation.save();
@@ -50,5 +54,26 @@ export class ReservationService {
 
   async delete(reservationId: string) {
     return this.reservations.deleteOne({ _id: reservationId }).exec();
+  }
+
+  @Cron(CronExpression.EVERY_30_SECONDS)
+  async invalidatePreemptedReservations() {
+    const threshold = new Date();
+    threshold.setMinutes(threshold.getMinutes() - 5);
+
+    const result = await this.reservations
+      .deleteMany({
+        status: ReservationStatus.PREEMPTED,
+        preemptedAt: {
+          $lte: threshold,
+        },
+      })
+      .exec();
+
+    this.logger.log(
+      `[Invalidation] ${threshold.toISOString()} | count : ${
+        result.deletedCount
+      }`,
+    );
   }
 }
