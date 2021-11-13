@@ -27,6 +27,7 @@ import { UserModule } from './user/user.module';
       autoSchemaFile: 'src/schema.gql',
       playground: true,
       introspection: true,
+      cors: true,
       installSubscriptionHandlers: true,
       context: ({ req, connection }) => {
         const authorization: string | null =
