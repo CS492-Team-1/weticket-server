@@ -8,7 +8,6 @@ type Reservation {
   seat: Float!
   status: ReservationStatus!
   preemptedAt: DateTime
-  reservedAt: DateTime
   user: User!
 }
 
