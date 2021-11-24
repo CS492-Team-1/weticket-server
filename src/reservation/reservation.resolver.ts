@@ -22,6 +22,8 @@ import {
   CancelReservationOutput,
   PreemptSeatInput,
   PreemptSeatOutput,
+  ReservationInput,
+  ReservationOutput,
   ReservationsInput,
   ReservationsOutput,
   ReserveSeatInput,
@@ -50,6 +52,35 @@ export class ReservationResolver {
       return {
         ok: true,
         reservations,
+      };
+    } catch (err) {
+      return {
+        ok: false,
+        error: err.message,
+      };
+    }
+  }
+
+  @Auth()
+  @Query(() => ReservationOutput)
+  async reservation(
+    @Args('input') input: ReservationInput,
+  ): Promise<ReservationOutput> {
+    try {
+      const reservation = await this.reservationService.findById(
+        input.reservationId,
+      );
+
+      if (!reservation) {
+        return {
+          ok: false,
+          error: '존재하지 않는 예약입니다.',
+        };
+      }
+
+      return {
+        ok: true,
+        reservation,
       };
     } catch (err) {
       return {
