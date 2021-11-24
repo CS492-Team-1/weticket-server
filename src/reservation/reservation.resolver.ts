@@ -188,7 +188,6 @@ export class ReservationResolver {
     }
   }
 
-  @Auth()
   @Subscription(() => Reservation, {
     filter: (payload, variables) => {
       return payload.reservation.time.getTime() === variables.time.getTime();
@@ -200,7 +199,6 @@ export class ReservationResolver {
     return this.pubSub.asyncIterator('newReservationOnTime');
   }
 
-  @Auth()
   @Subscription(() => Reservation, {
     filter: (payload, variables) => {
       return payload.reservation.time.getTime() === variables.time.getTime();
