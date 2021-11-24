@@ -13,10 +13,10 @@ export class PreemptSeatInput {
   @Type(() => Date)
   time: Date;
 
-  @Field(() => String)
-  @IsString()
+  @Field(() => [String])
+  @IsString({ each: true })
   @Type(() => String)
-  seat: string;
+  seats: string[];
 }
 
 @ObjectType()

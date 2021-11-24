@@ -66,22 +66,22 @@ export class ReservationResolver {
     @AuthUser() user: User,
   ): Promise<PreemptSeatOutput> {
     try {
-      const { time, seat } = input;
+      const { time, seats } = input;
 
-      const existingReservation = await this.reservationService.findByTimeAndSeat(
+      const existingReservation = await this.reservationService.findByTimeAndSeats(
         time,
-        seat,
+        seats,
       );
       if (existingReservation) {
         return {
           ok: false,
-          error: '이미 예약된 좌석입니다.',
+          error: '이미 예약된 좌석이 포함되어 있습니다.',
         };
       }
 
       const reservation = await this.reservationService.create(
         time,
-        seat,
+        seats,
         user,
       );
 

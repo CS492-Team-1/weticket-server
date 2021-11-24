@@ -19,9 +19,9 @@ export class Reservation {
   @Field(() => Date)
   time: Date;
 
-  @Prop({ required: true, type: String })
-  @Field(() => String)
-  seat: string;
+  @Prop({ required: true, type: [String] })
+  @Field(() => [String])
+  seats: string[];
 
   @Prop({ required: true, enum: ReservationStatus })
   @Field(() => ReservationStatus)

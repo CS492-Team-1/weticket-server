@@ -5,7 +5,7 @@
 type Reservation {
   id: String!
   time: DateTime!
-  seat: Float!
+  seats: [String!]!
   status: ReservationStatus!
   preemptedAt: DateTime
   user: User!
@@ -91,7 +91,7 @@ input RegisterInput {
 
 input PreemptSeatInput {
   time: DateTime!
-  seat: Float!
+  seats: [String!]!
 }
 
 input ReserveSeatInput {

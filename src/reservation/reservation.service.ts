@@ -21,19 +21,21 @@ export class ReservationService {
     return this.reservations.findById(reservationId).exec();
   }
 
-  async findByTimeAndSeat(time: Date, seat: string) {
+  async findByTimeAndSeats(time: Date, seats: string[]) {
     return this.reservations
       .findOne({
         time,
-        seat,
+        seats: {
+          $in: seats,
+        },
       })
       .exec();
   }
 
-  async create(time: Date, seat: string, user: User) {
+  async create(time: Date, seats: string[], user: User) {
     const reservation = new this.reservations({
       time,
-      seat,
+      seats,
       user,
       status: ReservationStatus.PREEMPTED,
       preemptedAt: new Date(),
