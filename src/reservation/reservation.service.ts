@@ -21,7 +21,7 @@ export class ReservationService {
     return this.reservations.findById(reservationId).exec();
   }
 
-  async findByTimeAndSeat(time: Date, seat: number) {
+  async findByTimeAndSeat(time: Date, seat: string) {
     return this.reservations
       .findOne({
         time,
@@ -30,7 +30,7 @@ export class ReservationService {
       .exec();
   }
 
-  async create(time: Date, seat: number, user: User) {
+  async create(time: Date, seat: string, user: User) {
     const reservation = new this.reservations({
       time,
       seat,

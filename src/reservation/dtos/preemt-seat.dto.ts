@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { IsDate, IsNumber } from 'class-validator';
+import { IsDate, IsString } from 'class-validator';
 import { BaseOutput } from 'src/common/dtos';
 
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
@@ -13,10 +13,10 @@ export class PreemptSeatInput {
   @Type(() => Date)
   time: Date;
 
-  @Field(() => Number)
-  @IsNumber()
-  @Type(() => Number)
-  seat: number;
+  @Field(() => String)
+  @IsString()
+  @Type(() => String)
+  seat: string;
 }
 
 @ObjectType()
