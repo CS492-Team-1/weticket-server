@@ -58,24 +58,24 @@ export class ReservationService {
     return this.reservations.deleteOne({ _id: reservationId }).exec();
   }
 
-  // @Cron(CronExpression.EVERY_30_SECONDS)
-  // async invalidatePreemptedReservations() {
-  //   const threshold = new Date();
-  //   threshold.setMinutes(threshold.getMinutes() - 5);
+  @Cron(CronExpression.EVERY_30_SECONDS)
+  async invalidatePreemptedReservations() {
+    const threshold = new Date();
+    threshold.setMinutes(threshold.getMinutes() - 5);
 
-  //   const result = await this.reservations
-  //     .deleteMany({
-  //       status: ReservationStatus.PREEMPTED,
-  //       preemptedAt: {
-  //         $lte: threshold,
-  //       },
-  //     })
-  //     .exec();
+    const result = await this.reservations
+      .deleteMany({
+        status: ReservationStatus.PREEMPTED,
+        preemptedAt: {
+          $lte: threshold,
+        },
+      })
+      .exec();
 
-  //   this.logger.log(
-  //     `[Invalidation] ${threshold.toISOString()} | count : ${
-  //       result.deletedCount
-  //     }`,
-  //   );
-  // }
+    this.logger.log(
+      `[Invalidation] ${threshold.toISOString()} | count : ${
+        result.deletedCount
+      }`,
+    );
+  }
 }
