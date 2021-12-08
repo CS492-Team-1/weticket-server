@@ -3,11 +3,22 @@
 # ------------------------------------------------------
 
 type Reservation {
+  """예약 ID"""
   id: String!
+
+  """예약 일시"""
   time: DateTime!
+
+  """좌석 목록"""
   seats: [String!]!
+
+  """예약 상태"""
   status: ReservationStatus!
+
+  """선점 시간"""
   preemptedAt: DateTime
+
+  """예약유저"""
   user: User!
 }
 
@@ -22,53 +33,113 @@ enum ReservationStatus {
 }
 
 type User {
+  """유저 데이터베이스 ID"""
   id: String!
+
+  """유저 로그인 아이디"""
   username: String!
+
+  """예약 목록"""
   reservations: [Reservation!]!
 }
 
+"""로그인 반환 데이터"""
 type LoginOutput {
+  """정상 처리 여부"""
   ok: Boolean!
+
+  """에러 메시지"""
   error: String
+
+  """인증 토큰"""
   accessToken: String
 }
 
+"""회원가입 반환 데이터"""
 type RegisterOutput {
+  """정상 처리 여부"""
   ok: Boolean!
+
+  """에러 메시지"""
   error: String
+
+  """가입된 유저"""
   user: User
 }
 
+"""좌석 선점 반환 데이터"""
 type PreemptSeatOutput {
+  """정상 처리 여부"""
   ok: Boolean!
+
+  """에러 메시지"""
   error: String
+
+  """선점된 좌석"""
   reservation: Reservation
 }
 
+"""예약 확정 반환값"""
 type ReserveSeatOutput {
+  """정상 처리 여부"""
   ok: Boolean!
+
+  """에러 메시지"""
   error: String
+
+  """확정된 예약"""
   reservation: Reservation
 }
 
-type ReservationsOutput {
+"""예약 정보 반환 데이터"""
+type ReservationOutput {
+  """정상 처리 여부"""
   ok: Boolean!
+
+  """에러 메시지"""
   error: String
+
+  """예약 정보"""
+  reservation: Reservation
+}
+
+"""예약 목록 반환 데이터"""
+type ReservationsOutput {
+  """정상 처리 여부"""
+  ok: Boolean!
+
+  """에러 메시지"""
+  error: String
+
+  """예약 목록"""
   reservations: [Reservation!]
 }
 
+"""예약 취소 반환 데이터"""
 type CancelReservationOutput {
+  """정상 처리 여부"""
   ok: Boolean!
+
+  """에러 메시지"""
   error: String
 }
 
 type Query {
   me: User!
   reservations(input: ReservationsInput!): ReservationsOutput!
+  reservation(input: ReservationInput!): ReservationOutput!
 }
 
+"""예약 목록을 불러오는데 필요한 데이터"""
 input ReservationsInput {
+  """일시(YYYY-MM-DD HH:mm)"""
   time: DateTime!
+}
+
+"""예약 정보를 불러오는데 필요한 데이터"""
+input ReservationInput {
+  """예약 ID"""
+  reservationId: String!
 }
 
 type Mutation {
@@ -79,26 +150,42 @@ type Mutation {
   cancelReservation(input: CancelReservationInput!): CancelReservationOutput!
 }
 
+"""로그인에 필요한 데이터"""
 input LoginInput {
+  """아이디"""
   username: String!
+
+  """비밀번호"""
   password: String!
 }
 
+"""회원가입에 필요한 데이터"""
 input RegisterInput {
+  """아이디"""
   username: String!
+
+  """비밀번호"""
   password: String!
 }
 
+"""좌석 선점에 필요한 데이터"""
 input PreemptSeatInput {
+  """예약 일시(YYYY-MM-DD HH:mm)"""
   time: DateTime!
+
+  """선택한 좌석 목록"""
   seats: [String!]!
 }
 
+"""예약 확정에 필요한 데이터"""
 input ReserveSeatInput {
+  """예약 ID"""
   reservationId: String!
 }
 
+"""예약 취소에 필요한 데이터"""
 input CancelReservationInput {
+  """예약 ID"""
   reservationId: String!
 }
 

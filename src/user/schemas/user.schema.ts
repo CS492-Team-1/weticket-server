@@ -11,18 +11,18 @@ export type UserDocument = User & Document;
 @ObjectType()
 export class User {
   @Prop({ _id: true })
-  @Field(() => String)
+  @Field(() => String, { description: '유저 데이터베이스 ID' })
   id: string;
 
   @Prop({ required: true })
-  @Field(() => String)
+  @Field(() => String, { description: '유저 로그인 아이디' })
   username: string;
 
   @Prop({ required: true })
   password: string;
 
   @Prop({ type: [{ type: Types.ObjectId, ref: 'Reservation' }] })
-  @Field(() => [Reservation])
+  @Field(() => [Reservation], { description: '예약 목록' })
   reservations: Reservation[];
 }
 
